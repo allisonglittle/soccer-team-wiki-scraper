@@ -39,4 +39,4 @@ def get_crest(country):
     json_img_src = json.dumps({'crest-source': img_src})
     return json_img_src
 
-print(get_crest('Japan'))
+

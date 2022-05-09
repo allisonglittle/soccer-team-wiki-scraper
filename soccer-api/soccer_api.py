@@ -15,11 +15,6 @@ from flask import Flask, request
 from image_scraper import get_crest
 
 
-# ----------------------------------------------------------------------
-# Constant Port Number
-# ----------------------------------------------------------------------
-PORT = 1234
-
 
 # ----------------------------------------------------------------------
 # REST API
@@ -36,5 +31,4 @@ def return_crest_json():
 
 
 if __name__ == '__main__':
-# def main():
-    app.run(host='0.0.0.0', port=PORT)
+    app.run(host='0.0.0.0', port=5000)

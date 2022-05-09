@@ -21,13 +21,46 @@ import json
 # ----------------------------------------------------------------------
 def crest_img_scraper(country):
     url = 'https://en.wikipedia.org/wiki/' + country +'_national_football_team'
+    attr = {'alt': 'Shirt badge/Association crest'}
+    crest_image = get_image_tag(url, attr)
+
+    if crest_image is None:
+        # Try a different wikipedia url
+        url = 'https://en.wikipedia.org/wiki/' + country + '_national_soccer_team'
+        crest_image = get_image_tag(url, attr)
+
+    if crest_image is None:
+        # Try a different wikipedia url
+        url = 'https://en.wikipedia.org/wiki/' + country + '_men%27s_national_soccer_team'
+        crest_image = get_image_tag(url, attr)
+
+    if crest_image is None:
+        # Try a different wikipedia url
+        url = 'https://en.wikipedia.org/wiki/' + country + '_men%27s_national_football_team'
+        crest_image = get_image_tag(url, attr)
+
+    # if crest_image is None:
+    #     # Return nation's flag
+    #     url = 'https://countryflagsapi.com/png/' + country
+    #     crest_image = get_image_tag(url, {})
+
+    if crest_image is None:
+        return ''
+
+    return crest_image['src']
+
+
+# ----------------------------------------------------------------------
+# Function takes in a url and image attribute
+# ----------------------------------------------------------------------
+def get_image_tag(url, attr):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     # Find first image from wikipedia page
-    crest_image = soup.find('img', attrs={'alt': 'Shirt badge/Association crest'})
+    crest_image = soup.find('img', attrs=attr)
 
-    return crest_image['src']
+    return crest_image
 
 
 # ----------------------------------------------------------------------
@@ -40,3 +73,4 @@ def get_crest(country):
     return json_img_src
 
 
+print(get_crest("fake"))

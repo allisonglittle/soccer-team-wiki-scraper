@@ -20,34 +20,27 @@ import json
 #   and returns the image address of the country's soccer team crest.
 # ----------------------------------------------------------------------
 def crest_img_scraper(country):
-    url = 'https://en.wikipedia.org/wiki/' + country +'_national_football_team'
+    # Trying out multiple urls because some wiki page names differ
+    urls = create_url_list(country)
     attr = {'alt': 'Shirt badge/Association crest'}
-    crest_image = get_image_tag(url, attr)
 
-    if crest_image is None:
-        # Try a different wikipedia url
-        url = 'https://en.wikipedia.org/wiki/' + country + '_national_soccer_team'
+    for url in urls:
         crest_image = get_image_tag(url, attr)
+        if crest_image is not None:
+            return crest_image['src']
 
-    if crest_image is None:
-        # Try a different wikipedia url
-        url = 'https://en.wikipedia.org/wiki/' + country + '_men%27s_national_soccer_team'
-        crest_image = get_image_tag(url, attr)
+    return ''
 
-    if crest_image is None:
-        # Try a different wikipedia url
-        url = 'https://en.wikipedia.org/wiki/' + country + '_men%27s_national_football_team'
-        crest_image = get_image_tag(url, attr)
 
-    # if crest_image is None:
-    #     # Return nation's flag
-    #     url = 'https://countryflagsapi.com/png/' + country
-    #     crest_image = get_image_tag(url, {})
-
-    if crest_image is None:
-        return ''
-
-    return crest_image['src']
+# ----------------------------------------------------------------------
+# Function takes in a country and returns possible urls to check
+# ----------------------------------------------------------------------
+def create_url_list(country):
+    url = ['https://en.wikipedia.org/wiki/' + country +'_national_football_team',
+           'https://en.wikipedia.org/wiki/' + country + '_national_soccer_team',
+           'https://en.wikipedia.org/wiki/' + country + '_men%27s_national_soccer_team',
+           'https://en.wikipedia.org/wiki/' + country + '_men%27s_national_football_team']
+    return url
 
 
 # ----------------------------------------------------------------------
@@ -72,5 +65,3 @@ def get_crest(country):
     json_img_src = json.dumps({'crest-source': img_src})
     return json_img_src
 
-
-print(get_crest("fake"))
